@@ -13,10 +13,8 @@
                     'Authorization': `Token ${localStorage.getItem('token')}`,
                 }
             };
-            $http({
-                method : "GET",
-                url : "/blog/posts/"+"?get_data=true",
-            }).then(function mySuccess(response) {
+            $http.get("/blog/posts/"+"?get_data=true", config),
+            .then(function mySuccess(response) {
                 $('.loading').fadeOut()
                 if(response.data.success){
                 }
