@@ -1,0 +1,28 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% verbatim %}
+	<div ng-controller="blogController" id="blog_controller" class="container-fluid light-gray">
+        <div>Posts</div>
+	</div>
+{% endverbatim %}
+<script type="text/javascript">
+	app.controller('blogController', function($scope, $http, $timeout, $filter, $cookies) {
+        $scope.blogs = []
+		$scope.home = function(){
+			var config = {headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`,
+                }
+            };
+            $http.get("/blog/posts/"+"?get_data=true", config)
+            .then(function mySuccess(response) {
+                $('.loading').fadeOut()
+                if(response.data.success){
+                }
+              }, function myError(response) {
+                notify_this("Internal Server Error.")
+            });
+        }
+        $scope.home()
+	});
+</script>
+{% endblock %}

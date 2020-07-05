@@ -1,0 +1,28 @@
+.login-div {
+    position: relative;
+    text-align: center;
+    margin: 0 auto;
+    /*this centers the div*/
+    overflow: hidden;
+    /* width and heiht, if needed to be established */
+    width: 500px;
+    height: 620px;
+    vertical-align: middle;
+}
+.float-left{
+	float: left !important;
+}
+.light-gray{
+	background: lightgray !important;
+}
+
+.login-card{
+	background: #79b4b4;
+    margin: 20px;
+    padding: 20px;
+    position: relative;
+    top: 25%;
+}
+p[id$="_error"]{
+    color: red !important;
+}
