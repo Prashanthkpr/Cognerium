@@ -1,0 +1,61 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% verbatim %}
+	<div ng-controller="loginController" id="login_controller" class="container-fluid light-gray">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-4">
+			<form class="login-form login-div">
+				<div class="card login-card">
+					<div class="card-header">
+						<img src="https://www.cognerium.com/wp-content/uploads/cognerium_transparent_logo.png" width="200"></img>
+						<p id="login_error"></p>
+					</div>
+					<div class="card-body">
+						<div className="form-group">
+							<label class="float-left">Email *</label>
+                            <input type="email" class="form-control display-inline" placeholder="Email" ng-model="login_data.username" required/>
+                            <p class="email_error error-message"></p>
+                        </div>
+                        <div className="form-group">
+                        	<label class="float-left">Password *</label>
+                            <input type="password" class="form-control display-inline" placeholder="Password" ng-model="login_data.password" required/>
+                            <p class="password_error error-message"></p>
+                        </div>
+					</div>
+					<div class="card-footer">
+						<button class="btn btn-primary btn-block btn-lg" ng-click="login()">Login</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-lg-4"></div>
+	</div>
+{% endverbatim %}
+<script type="text/javascript">
+	app.controller('loginController', function($scope, $http, $timeout, $filter, $cookies) {
+		$scope.login_data = {}
+		$scope.login = function(){
+			$http.defaults.headers.post['X-CSRFToken'] = $cookies.get('csrftoken');
+            $http({
+                method : "POST",
+                url : ".",
+                data: {'login_data': $scope.login_data}
+            }).then(function mySuccess(response) {
+                $('.loading').fadeOut()
+                if(response.data.success){
+                    localStorage.setItem('token', response.data.user.token)
+                	window.location = '/'
+                }
+                else{
+                	$('p[id$="_error"]').html(response.data.error)
+                    $timeout(function() {
+                        $('p[id$="_error"]').html("")
+                    }, 5000);
+                }
+              }, function myError(response) {
+                notify_this("Internal Server Error.")
+            });
+        }
+	});
+</script>
+{% endblock %}
